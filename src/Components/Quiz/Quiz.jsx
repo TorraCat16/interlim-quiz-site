@@ -9,6 +9,7 @@ const Quiz = () => {
   let[lock, setLock] = useState(false);
   let[score, setScore] = useState(0);
   let[result, setResult] = useState(false);
+  let [selectedOptions, setSelectedOptions] = useState({});
 
   let Option1 = useRef(null);
   let Option2 = useRef(null);
@@ -19,6 +20,7 @@ const Quiz = () => {
 
   const checkAns = (e, ans) => {
     if (lock === false) {
+      setSelectedOptions(prev => ({ ...prev, [index]: ans }));
       if (question.ans === ans) {
         e.target.classList.add("Correct");
         setLock(true);
@@ -40,21 +42,53 @@ const Quiz = () => {
       }
       setIndex(++index);
       setQuestion(data[index]);
-      setLock(false);
+
       optionArray.map((option) => {
         option.current.classList.remove("Wrong");
         option.current.classList.remove("Correct");
         return null;
       })
+
+      if (selectedOptions[index]) {
+
+      setLock(true);
+      optionArray[selectedOptions[index] - 1].current.classList.add(
+        selectedOptions[index] === data[index].ans ? "Correct" : "Wrong"
+      );
+
+      if (selectedOptions[index] !== data[index].ans) {
+        optionArray[data[index].ans - 1].current.classList.add("Correct");
+      }}
+      
+      else {
+        setLock(false);
+      } 
     }
   }
 
-  // const previous = () => {
-  //   if (index === 0) return;
-  //     setIndex(--index);
-  //     setQuestion(data[index]);
-  //     setLock(true);
-  //   }
+  const previous = () => {
+  if (index === 0) return 0;
+
+  setIndex(--index);
+  setQuestion(data[index]);
+  setLock(true);
+
+  optionArray.map((option) => {
+    option.current.classList.remove("Wrong");
+    option.current.classList.remove("Correct");
+    return null;
+  });
+
+  if (selectedOptions[index]) {
+      optionArray[selectedOptions[index] - 1].current.classList.add(
+      selectedOptions[index] === data[index].ans ? "Correct" : "Wrong"
+    );
+
+    if (selectedOptions[index] !== data[index].ans) {
+      optionArray[data[index].ans - 1].current.classList.add("Correct");
+    }
+  }
+};
 
 
   const reset = () => {
@@ -63,6 +97,7 @@ const Quiz = () => {
     setLock(false);
     setResult(false);
     setScore(0);
+    setSelectedOptions({});
   }
 
   return(
@@ -76,7 +111,7 @@ const Quiz = () => {
         <li ref = {Option3} onClick={(e) => {checkAns(e, 3)}}>{question.option3}</li>
         <li ref = {Option4} onClick={(e) => {checkAns(e, 4)}}>{question.option4}</li>
       </ul>
-      {/* <button onClick={previous}>Previous</button> */}
+      <button onClick={previous}>Previous</button>
       <button onClick={next}>Next</button>
       <div className="index">{index + 1} of {data.length} questions</div></>}
 
