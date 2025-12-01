@@ -1,0 +1,10 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  height: 100vh;
+  background-image: linear-gradient(rgb(108, 5, 5), rgb(99, 0, 99));
+  font-family: 'Times New Roman', Times, serif;
+}
