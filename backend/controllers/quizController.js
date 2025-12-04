@@ -52,3 +52,11 @@ exports.deleteQuiz = (req, res) => {
 
   res.json({ message: "Quiz deleted" });
 };
+
+exports.getQuizById = (req, res) => {
+  const quizId = Number(req.params.id);
+  const quiz = quizzes.find(q => q.id === quizId);
+  if (!quiz) return res.status(404).json({ error: "Quiz not found" });
+
+  res.json(quiz.questions);
+};

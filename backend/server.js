@@ -11,7 +11,7 @@ app.use(express.json());
 
 // routes
 app.use("/api/auth", authRoutes);
-app.use("/api/quizzes", quizRoutes);
+app.use("/api/quiz", quizRoutes);
 app.use("/api/attempts", attemptRoutes);
 
 app.get("/", (req, res) => {
@@ -21,3 +21,4 @@ app.get("/", (req, res) => {
 app.listen(4000, () => {
   console.log("Server running on port 4000");
 });
+
